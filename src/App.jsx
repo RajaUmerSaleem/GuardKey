@@ -92,7 +92,7 @@ export default function App() {
               onChange={handleInputChange}
             />
             <input
-              className='w-[20%] h-[99%] rounded-full border-green-500 border px-2 placeholder:text-[12px]'
+              className='w-[20%] h-[99%] rounded-full border-green-500 border px-2 placeholder:text-[10px]'
               type="password"
 
               placeholder='Password'
