@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function App() {
-  const [input, setInput] = useState({ id: '', url: '', username: '', password: '', Mode: true });
+  const [input, setInput] = useState({ url: '', username: '', password: '', Mode: true });
   const [dataArray, setDataArray] = useState(() => {
     const savedData = localStorage.getItem('dataArray');
     return savedData ? JSON.parse(savedData) : [];
