@@ -8,7 +8,7 @@ const Navbar = () => {
         <li className="p-2  text-white">
           <button className='font-semibold  bg-green-500 h-[70%] rounded-full px-2 py-1 border hover:bg-green-400 border-white-[1px] justify-center flex items-center cursor-pointer'>
           <a
-              href="https://github.com/RajaUmerSaleem/"
+              href="https://github.com/RajaUmerSaleem/GuardKey"
               target="_blank"
               rel="noopener noreferrer"
               className='flex'

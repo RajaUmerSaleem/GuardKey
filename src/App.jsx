@@ -27,12 +27,15 @@ export default function App() {
     if (input.username === '') {
       toast("Empty Username is Not Allowed!");
     }
-    if (input.password === '') {
-      toast("Empty Password is Not Allowed!");
+    if (input.username === '') {
+      toast("Empty Username is Not Allowed!");
+    }
+    if (input.username.length >= 16) {
+      toast("Long User name is Not Allowed!");
     }
 
-    if (input.url != '' && input.username != '' && input.password != '') {
-      setDataArray([...dataArray,  input]);
+    if (input.username.length <= 16&&input.url != '' && input.username != '' && input.password != '') {
+      setDataArray([...dataArray, input]);
       setInput({ url: '', username: '', password: '' });
     }
   };
@@ -122,10 +125,10 @@ export default function App() {
           <table className='h-full w-full  bg-white border border-gray-500'>
             {dataArray.length === 0 ? <div className='h-full w-full text-[15px] text-shadow-green-glow sm:text-[30px] bg-white border border-gray-500 flex justify-center items-center font-mono font-extralight ' >No Data In Storage</div> : ""}
             {dataArray.map((item, index) => (
-              <tr key={index} className='h-[12%] w-full  sm:text-[12px] flex hover:bg-gray-200 cursor-pointer overflow-hidden'>
-                <td className="w-[42%] sm:w-[45%]  border border-gray-500 sm:px-2 text-left flex-wrap ">{item.url}</td>
-                <td className="w-[20%]  border border-gray-500 sm:px-2 text-wrap overflow-hidden">{item.username}</td>
-                <td className="w-[20%]  border border-gray-500 sm:px-2 text-left flex flex-col gap-0 overflow-hidden"> {item.Mode ? item.password : "******"}
+              <tr key={index} className='h-[12%] w-full  text-[12px] sm:text-lg flex hover:bg-gray-200 cursor-pointer '>
+                <td className="w-[42%]   sm:w-[45%]  border border-gray-500 sm:px-2 text-left flex-wrap overflow-hidden ">{item.url}</td>
+                <td className="w-[20%]   border border-gray-500 sm:px-2 overflow-hidden">{item.username}</td>
+                <td className="w-[20%]   border border-gray-500 sm:px-2 text-left flex flex-col gap-0 overflow-hidden"> {item.Mode ? item.password : "******"}
                   <img
                     onClick={() => handleShow(index)}
                     className='h-[85%] w-[30%] sm:w-[12%] hover:h-[95%] cursor-pointer'
@@ -133,7 +136,7 @@ export default function App() {
                     alt="delete"
                   />
                 </td>
-                <td className="w-[25%]  border border-gray-500 sm:px-2 flex justify-center items-center">
+                <td className="w-[25%] border border-gray-500 sm:px-2 flex justify-center items-center ">
                   <img
                     onClick={() => handleDelete(index)}
                     className='h-[85%] w-[33%] sm:w-[20%] hover:h-[95%] cursor-pointer'
