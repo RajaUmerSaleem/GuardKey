@@ -37,7 +37,7 @@ export default function App() {
       toast("Long Pasword is Not Allowed!");
     }
 
-    if (input.username.length <= 16&&input.password.length >= 16&&input.url != '' && input.username != '' && input.password != '') {
+    if (input.username.length <= 16&&input.password.length <= 16&&input.url != '' && input.username != '' && input.password != '') {
       setDataArray([...dataArray, input]);
       setInput({ url: '', username: '', password: '' });
     }
