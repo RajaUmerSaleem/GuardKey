@@ -37,7 +37,7 @@ export default function App() {
       toast("Long Pasword is Not Allowed!");
     }
 
-    if (input.username.length <= 16&&input.password.length <= 16&&input.url != '' && input.username != '' && input.password != '') {
+    if (input.username.length <= 16 && input.password.length <= 16 && input.url != '' && input.username != '' && input.password != '') {
       setDataArray([...dataArray, input]);
       setInput({ url: '', username: '', password: '' });
     }
@@ -130,8 +130,8 @@ export default function App() {
             {dataArray.map((item, index) => (
               <tr key={index} className='h-[12%] w-full  text-[12px] sm:text-[15px] flex hover:bg-gray-200 cursor-pointer '>
                 <td className="w-[42%]   sm:w-[45%]  border border-gray-500 sm:px-2 text-left flex-wrap overflow-hidden ">{item.url}</td>
-                <td className="w-[20%]   border border-gray-500 sm:px-2 overflow-hidden">{item.username}</td>
-                <td className="w-[20%]   border border-gray-500 sm:px-2 text-left flex flex-col gap-0 overflow-hidden"> {item.Mode ? item.password : "******"}
+                <td className="w-[20%]   border border-gray-500 sm:px-2 flex-wrap  overflow-hidden">{item.username}</td>
+                <td className="w-[20%]   border border-gray-500 sm:px-2 text-left  flex flex-col gap-0 overflow-hidden"> {item.Mode ? item.password : "*".repeat(item.password.length)}
                   <img
                     onClick={() => handleShow(index)}
                     className='h-[85%] w-[30%] sm:w-[12%] hover:h-[95%] cursor-pointer'
