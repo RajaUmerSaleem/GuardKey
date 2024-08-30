@@ -5,14 +5,18 @@ import Footer from './components/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function App() {
-  const [input, setInput] = useState({ url: '', username: '', password: '', Mode: true });
-  const [dataArray, setDataArray] = useState(() => {
-    const savedData = localStorage.getItem('dataArray');
-    return savedData ? JSON.parse(savedData) : [];
-  });
+  const [input, setInput] = useState({ url: '', username: '', password: '', Mode: false });
+  const [dataArray, setDataArray] = useState([])
+
+  const getPasswords = async () => {
+    let req = await fetch("http://127.0.0.1:3000")
+    let passwords = await req.json()
+    setDataArray(passwords)
+  }
   useEffect(() => {
-    localStorage.setItem('dataArray', JSON.stringify(dataArray));
-  }, [dataArray]);
+    getPasswords();
+  }, [])
+
   const handleShow = (index) => {
     setDataArray(dataArray.map((item, i) => i === index ? { ...item, Mode: !item.Mode } : item));
   }
@@ -20,7 +24,7 @@ export default function App() {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (input.url === '') {
       toast("Empty URL is Not Allowed!");
     }
@@ -37,24 +41,43 @@ export default function App() {
       toast("Long Pasword is Not Allowed!");
     }
 
-    if (input.username.length <= 16&&input.password.length <= 16&&input.url != '' && input.username != '' && input.password != '') {
+    if (input.username.length <= 16 && input.password.length <= 16 && input.url != '' && input.username != '' && input.password != '') {
       setDataArray([...dataArray, input]);
-      setInput({ url: '', username: '', password: '' });
+      await fetch("http://localhost:3000/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input) });
+      setInput({ url: '', username: '', password: '', mode: false });
     }
   };
 
-  const handleDelete = (index) => {
-    setDataArray(dataArray.filter((_, i) => i !== index));
+  const handleDelete = async (index) => {
+    const passwordToDelete = dataArray[index];
+    console.log(passwordToDelete);
+    try {
+      const req = await fetch("http://localhost:3000/", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: passwordToDelete.url })
+      });
+
+      if (req.ok) {
+        setDataArray(dataArray.filter((_, i) => i !== index));
+        toast.success("Password deleted successfully!");
+      } else {
+        toast.error("Failed to delete password!");
+      }
+    } catch (error) {
+      console.error("Error deleting password:", error);
+      toast.error("Failed to delete password from server!");
+    }
   };
   const handlecopy = (index) => {
     navigator.clipboard.writeText([dataArray[index].url, dataArray[index].username, dataArray[index].password])
     toast.success("Data copied to clipboard!");
   }
 
-  const handleEdit = (index) => {
+  const handleEdit = async (index) => {
     const itemToEdit = dataArray[index];
+    await handleDelete(index);
     setInput(itemToEdit);
-    handleDelete(index);
   };
 
   return (
@@ -130,8 +153,8 @@ export default function App() {
             {dataArray.map((item, index) => (
               <tr key={index} className='h-[12%] w-full  text-[12px] sm:text-[15px] flex hover:bg-gray-200 cursor-pointer '>
                 <td className="w-[42%]   sm:w-[45%]  border border-gray-500 sm:px-2 text-left flex-wrap overflow-hidden ">{item.url}</td>
-                <td className="w-[20%]   border border-gray-500 sm:px-2 overflow-hidden">{item.username}</td>
-                <td className="w-[20%]   border border-gray-500 sm:px-2 text-left flex flex-col gap-0 overflow-hidden"> {item.Mode ? item.password : "******"}
+                <td className="w-[20%]   border border-gray-500 sm:px-2 flex-wrap  overflow-hidden">{item.username}</td>
+                <td className="w-[20%]   border border-gray-500 sm:px-2 text-left  flex flex-col gap-0 overflow-hidden"> {item.Mode ? item.password : "*".repeat(item.password.length)}
                   <img
                     onClick={() => handleShow(index)}
                     className='h-[85%] w-[30%] sm:w-[12%] hover:h-[95%] cursor-pointer'
